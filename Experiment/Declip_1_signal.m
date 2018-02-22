@@ -56,6 +56,8 @@ reliable_samples_mat = binary_vec2mat(reliable_samples,param);
 
 SNRin_clipped = SNR(x(~reliable_samples),y(~reliable_samples));
 
+fprintf('%.1f percent of clipped samples\n', sum(~reliable_samples)/length(x)*100)
+
 %% Reconstruct signal using IHT for inpainting:
 
 fprintf('\n    IHT for inpainting:\n')
@@ -73,15 +75,16 @@ x_est_IHT = frames2signal(X_est_IHT,param);
 % figure, plot(log(cost))
 % title('Objective')
 
-SNRout = SNR(x,x_est_IHT);
+SNRout_IHT = SNR(x,x_est_IHT);
 SNRout_clipped = SNR(x(~reliable_samples),x_est_IHT(~reliable_samples));
 
-fprintf('SNRout: %.3f dB\n',SNRout)
+fprintf('SNRout: %.3f dB\n',SNRout_IHT)
 fprintf('SNR clipped improvement: %.3f dB\n',SNRout_clipped-SNRin_clipped)
 
 figure, plot(1:L, x, 1:L, x_est_IHT, 1:L, y, '--')
 legend('clean','estimate','clipped')
-title(sprintf('IHT for inpainting: SNR = %.3f dB',SNRout))
+title(sprintf('IHT for inpainting: SNR = %.2f dB',SNRout_IHT))
+axis tight
 
 %% Reconstruct signal using dictionary learning for inpainting:
 
@@ -105,15 +108,16 @@ x_est_DL = frames2signal(X_est_DL,param);
 % figure, plot(log(cost))
 % title('Objective')
 
-SNRout = SNR(x,x_est_DL);
+SNRout_DL = SNR(x,x_est_DL);
 SNRout_clipped = SNR(x(~reliable_samples),x_est_DL(~reliable_samples));
 
-fprintf('SNRout: %.3f dB\n',SNRout)
+fprintf('SNRout: %.3f dB\n',SNRout_DL)
 fprintf('SNR clipped improvement: %.3f dB\n',SNRout_clipped-SNRin_clipped)
 
 figure, plot(1:L, x, 1:L, x_est_DL, 1:L, y, '--')
 legend('clean','estimate','clipped')
-title(sprintf('Dictionary learning: SNR = %.3f dB',SNRout))
+title(sprintf('Dictionary learning: SNR = %.2f dB',SNRout_DL))
+axis tight
 
 %% Reconstruct signal using consIHT:
 
@@ -132,15 +136,16 @@ x_est_consIHT = frames2signal(X_est_consIHT,param);
 % figure, plot(log(cost))
 % title('Objective')
 
-SNRout = SNR(x,x_est_consIHT);
+SNRout_consIHT = SNR(x,x_est_consIHT);
 SNRout_clipped = SNR(x(~reliable_samples),x_est_consIHT(~reliable_samples));
 
-fprintf('SNRout: %.3f dB\n',SNRout)
+fprintf('SNRout: %.3f dB\n',SNRout_consIHT)
 fprintf('SNR clipped improvement: %.3f dB\n',SNRout_clipped-SNRin_clipped)
 
 figure, plot(1:L, x, 1:L, x_est_consIHT, 1:L, y, '--')
 legend('clean','estimate','clipped')
-title(sprintf('Consistent IHT: SNR = %.3f dB',SNRout))
+title(sprintf('Consistent IHT: SNR = %.2f dB',SNRout_consIHT))
+axis tight
 
 %% Reconstruct signal using consDL:
 
@@ -164,30 +169,37 @@ x_est_consDL = frames2signal(X_est_consDL,param);
 % figure, plot(log(cost))
 % title('Objective')
 
-SNRout = SNR(x,x_est_consDL);
+SNRout_consDL = SNR(x,x_est_consDL);
 SNRout_clipped = SNR(x(~reliable_samples),x_est_consDL(~reliable_samples));
 
-fprintf('SNRout: %.3f dB\n',SNRout)
+fprintf('SNRout: %.3f dB\n',SNRout_consDL)
 fprintf('SNR clipped improvement: %.3f dB\n',SNRout_clipped-SNRin_clipped)
 
 figure, plot(1:L, x, 1:L, x_est_consDL, 1:L, y, '--')
 legend('clean','estimate','clipped')
-title(sprintf('Consistent dictionary learning: SNR = %.3f dB',SNRout))
+title(sprintf('Consistent dictionary learning: SNR = %.2f dB',SNRout_consDL))
+axis tight
 
 
 %% Plots
 
-samples = 17400:17500; 
+samples = 46800:46900; 
 
-figure, plot(samples, x(samples), samples, x_est_IHT(samples), samples, y(samples), '--')
-title('IHT for inpainting')
-figure, plot(samples, x(samples), samples, x_est_DL(samples), samples, y(samples), '--')
-title('Dictionary learning for inpainting')
-figure, plot(samples, x(samples), samples, x_est_consIHT(samples), samples, y(samples), '--')
-title('Consistent IHT')
-figure, plot(samples, x(samples), samples, x_est_consDL(samples), samples, y(samples), '--')
-title('Consistent dictionary learning')
+% percentage of missing samples:
+% sum(~reliable_samples(samples))/length(samples)*100;
 
+figure, plot(samples, x(samples), samples, x_est_IHT(samples), samples, y(samples), '--'), axis tight
+title(sprintf('IHT for inpainting: SNR = %.2f dB',SNRout_IHT))
+legend('clean','estimate','clipped')
+figure, plot(samples, x(samples), samples, x_est_DL(samples), samples, y(samples), '--'), axis tight
+title(sprintf('Dictionary learning: SNR = %.2f dB',SNRout_DL))
+legend('clean','estimate','clipped')
+figure, plot(samples, x(samples), samples, x_est_consIHT(samples), samples, y(samples), '--'), axis tight
+title(sprintf('Consistent IHT: SNR = %.2f dB',SNRout_consIHT))
+legend('clean','estimate','clipped')
+figure, plot(samples, x(samples), samples, x_est_consDL(samples), samples, y(samples), '--'), axis tight
+title(sprintf('Consistent dictionary learning: SNR = %.2f dB',SNRout_consDL))
+legend('clean','estimate','clipped')
 
 %% Evaluate how much the dictionary has "learned"
 
