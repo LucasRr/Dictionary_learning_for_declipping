@@ -1,5 +1,18 @@
 # Consistent dictionary learning for signal declipping
 
+This is an implementation of the algorithm proposed in:
+
+*Consistent dictionary learning for signal declipping*, L. Rencker, F. Bach, W. Wang, M. D. Plumbley, International Conference on Independent Component Analysis and Source Separation (LVA/ICA), 2018 (to appear).
+
+The pre-print can be seen at `consistent_DL_LVA18_preprint.pdf`.
+
+#### Author:
+Lucas Rencker,  
+*Centre for Vision, Speech and Signal Processing (CVSSP)*, University of Surrey, UK  
+Contact: lucas \[dot\] rencker \[at\] surrey.ac.uk  
+
+## Quick demo:
+
 Clipping, or saturation, is a common nonlinear distortion in signal processing. Clipping occurs when the signal reaches a maximum threshold  and the waveform is truncated:
 
 ![Clipped signal](/Figures/clipped_glockenspiel.png)
