@@ -8,6 +8,10 @@ function D = DCT_Dictionary(param)
 %
 % Output:
 %   - D: overcomplete DCT dictionary
+% ------------------
+%
+% Author: Lucas Rencker
+% Last update: 28/03/18
 
 
 wa = param.wa(param.N); % weigthing window

@@ -8,6 +8,10 @@ function [y, ClippingLevel] = clip_signal(x, SNR_target)
 %  Output: 
 %         - y: signal clipped at SNR_target +/- 0.001 dB
 %         - ClippingLevel: clipping level
+% ------------------
+%
+% Author: Lucas Rencker
+% Last update: 28/03/18
 
 
 ClippingLevel1 = 0;

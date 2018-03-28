@@ -1,5 +1,36 @@
-% Evaluate the declipping performance of 1 signal, using consistent
-% dictionary learning
+
+% This code compares 4 different approaches for signal declipping:
+%
+% - IHT_inpainting.m discards the clipped samples and performs sparse decomposition 
+%     on the unclipped samples, using IHT and a fixed DCT dictionary
+% - DictionaryLearning_inpainting.m discards the clipped samples and performs a 
+%     gradient descent-based dictionary learning on the unclipped samples
+% - consIHT.m performs consistent IHT for declipping, using a fixed DCT
+% dictionary [1]
+% - consDictionaryLearning.m performs consistent dictionary learning for
+% signal declipping, as proposed in [2]
+%
+%
+% References:
+% [1]: Consistent iterative hard thresholding for signal declipping, 
+%     S. Kitic, L. Jacques, N. Madhu, M. P. Hopwood, A. Spriet, C. De Vleeschouwer, ICASSP, 2013
+% 
+% [2]: Consistent dictionary learning for signal declipping, 
+%     L. Rencker, F. Bach, W. Wang, M. D. Plumbley,
+%     Latent Variable Analysis and Signal Separation (LVA/ICA), Guildford, UK, 2018
+% 
+% --------------------- 
+%
+% Author: Lucas Rencker
+%         Centre for Vision, Speech and Signal Processing (CVSSP), University of Surrey
+%
+% Contact: lucas.rencker@surrey.ac.uk
+%                    
+% Last update: 28/03/18
+% 
+% This code is distributed under the terms of the GNU Public License version 3 
+% (http://www.gnu.org/licenses/gpl.txt).
+%                
 
 close all
 clear all
@@ -34,7 +65,7 @@ x = x/max(abs(x)); % normalize signal
 %% Clip signal:
 
 SNRInput = 3; % desired input SNR
-[y, ClippingLevel] = clip_signal(x, SNRInput);
+[y, ~] = clip_signal(x, SNRInput);
 
 SNRin = SNR(x,y);
 fprintf('Input SNR: %.3f dB\n',SNRin)
@@ -50,6 +81,9 @@ y = y(1:L);
 x = x(1:L);
 
 %% Detect reliable samples:
+
+% Detect clipping level:
+ClippingLevel = max(abs(y));
 
 reliable_samples = y<ClippingLevel & y>-ClippingLevel;
 reliable_samples_mat = binary_vec2mat(reliable_samples,param);
@@ -98,7 +132,7 @@ paramDL.Nit_dict_update = 20; % number of iterations dictionary update step
 paramDL.warm_start = 1; % 1 to perform warm start at each iteration
 paramDL.A_init = zeros(M,Nframes); % initialize sparse coefficient matrix
 paramDL.D_init = DCT_Dictionary(param); % initialize dictionary
-paramDL.loud = 0; % print results
+paramDL.loud = 1; % print results
 
 [D_DL,A,cost] = DictionaryLearning_inpainting(Y,reliable_samples_mat,paramDL);
 
@@ -159,7 +193,7 @@ paramDL.Nit_dict_update = 20; % number of iterations dictionary update step
 paramDL.warm_start = 1; % 1 to perform warm start at each iteration
 paramDL.A_init = zeros(M,Nframes); % initialize sparse coefficient matrix
 paramDL.D_init = DCT_Dictionary(param); % initialize dictionary
-paramDL.loud = 0; % print results
+paramDL.loud = 1; % print results
 
 [D_consDL,A,cost] = consDictionaryLearning(Y,reliable_samples_mat,paramDL);
 
@@ -201,16 +235,6 @@ figure, plot(samples, x(samples), samples, x_est_consDL(samples), samples, y(sam
 title(sprintf('Consistent dictionary learning: SNR = %.2f dB',SNRout_consDL))
 legend('clean','estimate','clipped')
 
-%% Evaluate how much the dictionary has "learned"
-
-fprintf('\n    Correlation between learned dictionary and initial DCT dictionary:\n\n')
-
-% A high correlation means the dictionary has not learned much compared to
-% the initial DCT dictionary
-
-fprintf('Using dictionary learning for inpainting: %.3f\n', sum(sum((D_DCT'*D_DL).^2))/sum(sum((D_DCT'*D_DCT).^2)))
-fprintf('Using consistent dictionary learning: %.3f\n', sum(sum((D_DCT'*D_consDL).^2))/sum(sum((D_DCT'*D_DCT).^2)))
-
 %% Listen to the results
  
 % We can re-project on the unclipped samples to avoid extra distortion due
@@ -220,6 +244,8 @@ x_est_IHT(reliable_samples) = y(reliable_samples);
 x_est_DL(reliable_samples) = y(reliable_samples);
 x_est_consIHT(reliable_samples) = y(reliable_samples);
 x_est_consDL(reliable_samples) = y(reliable_samples);
+
+% Uncomment to listen to the result:
 
 % sound(x,fs)
 % sound(y,fs)

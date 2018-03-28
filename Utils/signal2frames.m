@@ -9,6 +9,10 @@ function Y = signal2frames(y, param)
 % 
 % Output: -Y: matrix containing each frame
 % 
+% ------------------
+%
+% Author: Lucas Rencker
+% Last update: 28/03/18
 
 N = param.N;
 L = length(y);

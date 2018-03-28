@@ -7,11 +7,15 @@ function A_ht = hard_threshold(A,K)
 %         - K: sparsity parameter (number of non-zero coefficient)
 %         
 % Output: - A_ht: sparse output matrix, with K non-zero coefficient per column
+% ------------------
+%
+% Author: Lucas Rencker
+% Last update: 28/03/18
 
 
 if K == size(A,1)
     A_ht = A;
 else
     A_sort = sort(abs(A),'descend');
-    A_ht = A.*bsxfun(@ge,abs(A),A_sort(K,:));
+    A_ht = A.*bsxfun(@ge,abs(A),A_sort(K,:)); % fast implementation
 end

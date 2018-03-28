@@ -4,6 +4,10 @@ function w = wHamm(L)
 %         -L: size of window
 % Output:
 %         -w: Hamming window of size L
+% ------------------
+%
+% Author: Lucas Rencker
+% Last update: 28/03/18
 
 w = hamming(L);
 

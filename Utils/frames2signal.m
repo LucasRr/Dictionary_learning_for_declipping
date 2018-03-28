@@ -2,7 +2,7 @@ function y = frames2signal(Y, param)
 %
 % Reconstruct signal from frames using overlap and add
 % 
-% Input: -yFrames: overlapping time frames
+% Input: -Y: overlapping time frames
 %        -param.N: frame length
 %         param.hop: hop size
 %         param.wa: analysis window
@@ -11,6 +11,10 @@ function y = frames2signal(Y, param)
 % Output: y: Reconstructed signal
 % 
 % 
+% ------------------
+%
+% Author: Lucas Rencker
+% Last update: 28/03/18
 
 N = param.N;
 hop = param.hop;

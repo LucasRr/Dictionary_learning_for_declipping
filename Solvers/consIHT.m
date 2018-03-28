@@ -1,5 +1,5 @@
 function [A,cost] = consIHT(Y,reliable_samples_mat,D,alg_param)
-% Perform declipping using consistent Iterative Hard Thresholding
+% Perform declipping using consistent Iterative Hard Thresholding [1]
 % 
 % Inputs:
 %         - Y: matrix of size NxT containing T clipped signals of size N
@@ -12,8 +12,25 @@ function [A,cost] = consIHT(Y,reliable_samples_mat,D,alg_param)
 % Outputs:
 %         - A: sparse activation matrix
 %         - cost: vector containing the value of the cost at each iteration
+% 
+% [1] : Consistent iterative hard thresholding for signal declipping, Kitic et al, ICASSP 2013 
+%
 %         
+% --------------------- 
+%
+% Author: Lucas Rencker
+%         Centre for Vision, Speech and Signal Processing (CVSSP), University of Surrey
+%
+% Contact: lucas.rencker@surrey.ac.uk
 %         
+% Reference: Consistent dictionary learning for signal declipping, L. Rencker, F. Bach, W. Wang, M. D. Plumbley,
+%            Latent Variable Analysis and Signal Separation (LVA/ICA), Guildford, UK, 2018
+%             
+% Last update: 28/03/18
+% 
+% This code is distributed under the terms of the GNU Public License version 3 
+% (http://www.gnu.org/licenses/gpl.txt).
+%                
         
 %% Initialize parameters
 

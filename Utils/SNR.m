@@ -1,14 +1,17 @@
-function snr = SNR(y_ref,y)
+function snr = SNR(x_ref,x)
 % Signal-to-noise Ratio
 %
 % Inputs:
-%          - y: signal to evaluate
-%          - y_ref: reference clean signal
+%          - x: signal to evaluate
+%          - x_ref: reference clean signal
 %
-% Output:  - snr: SNR of signal y
-% -------------------
+% Output:  - snr: SNR of signal x
+% ------------------
+%
+% Author: Lucas Rencker
+% Last update: 28/03/18
 
-snr = 10*log10((sum(y_ref.^2)+eps)/sum((y-y_ref).^2)+eps);
+snr = 10*log10((sum(x_ref.^2)+eps)/sum((x-x_ref).^2)+eps);
 
 snr = min(snr,80); % define 80dB as "perfect signal" (to avoid inf)
 

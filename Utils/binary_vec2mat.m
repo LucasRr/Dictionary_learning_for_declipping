@@ -7,7 +7,11 @@ function binary_mask_mat = binary_vec2mat(binary_mask_vec, param)
 %         param.hop: hop size
 % 
 % Output: -binary_mask_mat: binary matrix mask
-% 
+%
+% ------------------
+%
+% Author: Lucas Rencker
+% Last update: 28/03/18
 
 N = param.N;
 L = length(binary_mask_vec);
