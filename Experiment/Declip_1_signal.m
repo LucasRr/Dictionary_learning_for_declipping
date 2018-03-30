@@ -64,7 +64,7 @@ x = x/max(abs(x)); % normalize signal
 
 %% Clip signal:
 
-SNRInput = 3; % desired input SNR
+SNRInput = 5; % desired input SNR
 [y, ~] = clip_signal(x, SNRInput);
 
 SNRin = SNR(x,y);
@@ -253,3 +253,11 @@ x_est_consDL(reliable_samples) = y(reliable_samples);
 % sound(x_est_DL,fs)
 % sound(x_est_consIHT,fs)
 % sound(x_est_consDL,fs)
+
+% save results:
+% audiowrite('clean.wav',x,fs)
+% audiowrite('clipped.wav',y,fs)
+% audiowrite('declipped_IHT.wav',x_est_IHT,fs)
+% audiowrite('declipped_DL.wav',x_est_DL,fs)
+% audiowrite('declipped_consIHT.wav',x_est_consIHT,fs)
+% audiowrite('declipped_consDL.wav',x_est_consDL,fs)
