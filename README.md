@@ -8,7 +8,7 @@ This is an implementation of the algorithm proposed in:
 *Consistent dictionary learning for signal declipping*, L. Rencker, F. Bach, W. Wang, M. D. Plumbley, 
 Latent Variable Analysis and Signal Separation (LVA/ICA), Guildford, UK, 2018
 
-The pre-print can be seen at `consistent_DL_LVA18_preprint.pdf`.
+The paper can be found at http://epubs.surrey.ac.uk/846156/1/Consistent_DL_for_signal_declipping.pdf.
 
 ## Author:
 Lucas Rencker,  
@@ -28,6 +28,8 @@ This code performs declipping using 4 different approaches:
 * **Dictionary learning for inpainting:** discards the clipped samples and performs dictionary learning on the unclipped samples
 * **Consistent IHT:** performs consistent IHT using a fixed DCT dictionary \[1\]
 * **Consistent dictionary learning:** performs consistent dictionary learning using the algorithm proposed in \[2\]
+
+"Consistent" formulations enforce the signal to be consistent with the clipped measurements, i.e. enforcing the reconstructed clipped samples to be above the clipping level. This can be done by minimizing the distance to a convex feasibility set, see \[2\] for more details.
 
 You can see an example of declipping a glockspiel signal by running:
 ```
